@@ -314,7 +314,7 @@ def _get_default_backend_url(provider: str) -> str:
     """
     default_urls = {
         "google": "https://generativelanguage.googleapis.com/v1beta",
-        "dashscope": "https://dashscope.aliyuncs.com/api/v1",
+        "dashscope": "https://dashscope.aliyuncs.com/compatible-mode/v1",
         "openai": "https://api.openai.com/v1",
         "deepseek": "https://api.deepseek.com",
         "anthropic": "https://api.anthropic.com",

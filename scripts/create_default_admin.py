@@ -26,7 +26,11 @@ from pymongo import MongoClient
 
 
 # 配置
-MONGO_URI = "mongodb://admin:tradingagents123@localhost:27017/tradingagents?authSource=admin"
+# 在 Docker 容器内运行时，host 应为 'mongodb'
+# 在本地运行时，host 应为 'localhost'
+import os
+MONGODB_HOST = os.getenv("MONGODB_HOST", "localhost")
+MONGO_URI = f"mongodb://admin:tradingagents123@{MONGODB_HOST}:27017/tradingagents?authSource=admin"
 DB_NAME = "tradingagents"
 
 

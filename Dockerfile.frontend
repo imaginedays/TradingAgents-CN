@@ -8,7 +8,10 @@ ENV NODE_ENV=production
 WORKDIR /app/frontend
 
 # 启用Corepack并使用Yarn 1.22.22（项目使用的包管理器）
-RUN corepack enable && corepack prepare yarn@1.22.22 --activate
+# 优化：通过环境变量配置 npmmirror 镜像源以加速 corepack 下载
+ENV COREPACK_NPM_REGISTRY=https://registry.npmmirror.com
+RUN corepack enable && \
+    corepack prepare yarn@1.22.22 --activate
 
 # 复制package.json、yarn.lock和.yarnrc（配置国内镜像源）
 COPY frontend/package.json frontend/yarn.lock frontend/.yarnrc ./
