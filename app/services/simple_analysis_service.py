@@ -718,7 +718,7 @@ class SimpleAnalysisService:
         logger.info(f"🔧 创建新的TradingAgents实例（并发安全模式）...")
 
         trading_graph = TradingAgentsGraph(
-            selected_analysts=config.get("selected_analysts", ["market", "fundamentals"]),
+            selected_analysts=config.get("selected_analysts", ["macro", "sector", "market", "fundamentals"]),
             debug=config.get("debug", False),
             config=config
         )
@@ -1303,12 +1303,16 @@ class SimpleAnalysisService:
                         return
 
                     # 分析师阶段 - 根据选择的分析师数量动态调整
-                    analysts = request.parameters.selected_analysts if request.parameters else ["market", "fundamentals"]
+                    analysts = request.parameters.selected_analysts if request.parameters else ["macro", "sector", "market", "fundamentals"]
 
                     # 模拟分析师执行
                     for i, analyst in enumerate(analysts):
                         time.sleep(15)  # 每个分析师大约15秒
-                        if analyst == "market":
+                        if analyst == "macro":
+                            progress_tracker.update_progress("🌍 宏观分析师正在分析")
+                        elif analyst == "sector":
+                            progress_tracker.update_progress("🏗️ 行业分析师正在分析")
+                        elif analyst == "market":
                             progress_tracker.update_progress("📊 市场分析师正在分析")
                         elif analyst == "fundamentals":
                             progress_tracker.update_progress("💼 基本面分析师正在分析")

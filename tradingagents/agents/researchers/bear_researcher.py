@@ -18,6 +18,8 @@ def create_bear_researcher(llm, memory):
         sentiment_report = state["sentiment_report"]
         news_report = state["news_report"]
         fundamentals_report = state["fundamentals_report"]
+        macro_report = state.get("macro_report", "未提供宏观分析")
+        sector_report = state.get("sector_report", "未提供行业分析")
 
         # 使用统一的股票类型检测
         ticker = state.get('company_of_interest', 'Unknown')
@@ -73,7 +75,7 @@ def create_bear_researcher(llm, memory):
         currency = market_info['currency_name']
         currency_symbol = market_info['currency_symbol']
 
-        curr_situation = f"{market_research_report}\n\n{sentiment_report}\n\n{news_report}\n\n{fundamentals_report}"
+        curr_situation = f"{macro_report}\n\n{sector_report}\n\n{market_research_report}\n\n{sentiment_report}\n\n{news_report}\n\n{fundamentals_report}"
 
         # 安全检查：确保memory不为None
         if memory is not None:
@@ -99,15 +101,13 @@ def create_bear_researcher(llm, memory):
 - 竞争劣势：强调市场地位较弱、创新下降或来自竞争对手威胁等脆弱性
 - 负面指标：使用财务数据、市场趋势或最近不利消息的证据来支持你的立场
 - 反驳看涨观点：用具体数据和合理推理批判性分析看涨论点，揭露弱点或过度乐观的假设
-- 参与讨论：以对话风格呈现你的论点，直接回应看涨分析师的观点并进行有效辩论，而不仅仅是列举事实
-
-可用资源：
-
+- 参与讨论：以对话风格呈现你的论点，直接回应看涨分析师的观点并进行有可用资源：
+宏观经济分析报告：{macro_report}
+行业竞争分析报告：{sector_report}
 市场研究报告：{market_research_report}
 社交媒体情绪报告：{sentiment_report}
 最新世界事务新闻：{news_report}
-公司基本面报告：{fundamentals_report}
-辩论对话历史：{history}
+公司基本面报告：{fundamentals_report}历史：{history}
 最后的看涨论点：{current_response}
 类似情况的反思和经验教训：{past_memory_str}
 

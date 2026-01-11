@@ -13,10 +13,12 @@ def create_research_manager(llm, memory):
         sentiment_report = state["sentiment_report"]
         news_report = state["news_report"]
         fundamentals_report = state["fundamentals_report"]
+        macro_report = state.get("macro_report", "未提供宏观分析")
+        sector_report = state.get("sector_report", "未提供行业分析")
 
         investment_debate_state = state["investment_debate_state"]
 
-        curr_situation = f"{market_research_report}\n\n{sentiment_report}\n\n{news_report}\n\n{fundamentals_report}"
+        curr_situation = f"{macro_report}\n\n{sector_report}\n\n{market_research_report}\n\n{sentiment_report}\n\n{news_report}\n\n{fundamentals_report}"
 
         # 安全检查：确保memory不为None
         if memory is not None:
@@ -53,6 +55,10 @@ def create_research_manager(llm, memory):
 \"{past_memory_str}\"
 
 以下是综合分析报告：
+宏观经济分析：{macro_report}
+
+行业竞争分析：{sector_report}
+
 市场研究：{market_research_report}
 
 情绪分析：{sentiment_report}

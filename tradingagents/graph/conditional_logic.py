@@ -198,6 +198,42 @@ class ConditionalLogic:
         logger.info(f"🔀 [条件判断] ✅ 无tool_calls，返回: Msg Clear Fundamentals")
         return "Msg Clear Fundamentals"
 
+    def should_continue_macro(self, state: AgentState):
+        """判断宏观分析是否应该继续"""
+        from tradingagents.utils.logging_init import get_logger
+        logger = get_logger("agents")
+        messages = state["messages"]
+        last_message = messages[-1]
+        tool_call_count = state.get("macro_tool_call_count", 0)
+        max_tool_calls = 3
+        macro_report = state.get("macro_report", "")
+
+        if macro_report and len(macro_report) > 100:
+            return "Msg Clear Macro"
+        if hasattr(last_message, 'tool_calls') and last_message.tool_calls:
+            if tool_call_count >= max_tool_calls:
+                return "Msg Clear Macro"
+            return "tools_macro"
+        return "Msg Clear Macro"
+
+    def should_continue_sector(self, state: AgentState):
+        """判断行业分析是否应该继续"""
+        from tradingagents.utils.logging_init import get_logger
+        logger = get_logger("agents")
+        messages = state["messages"]
+        last_message = messages[-1]
+        tool_call_count = state.get("sector_tool_call_count", 0)
+        max_tool_calls = 3
+        sector_report = state.get("sector_report", "")
+
+        if sector_report and len(sector_report) > 100:
+            return "Msg Clear Sector"
+        if hasattr(last_message, 'tool_calls') and last_message.tool_calls:
+            if tool_call_count >= max_tool_calls:
+                return "Msg Clear Sector"
+            return "tools_sector"
+        return "Msg Clear Sector"
+
     def should_continue_debate(self, state: AgentState) -> str:
         """Determine if debate should continue."""
         current_count = state["investment_debate_state"]["count"]

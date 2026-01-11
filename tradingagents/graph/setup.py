@@ -136,6 +136,22 @@ class GraphSetup:
             delete_nodes["fundamentals"] = create_msg_delete()
             tool_nodes["fundamentals"] = self.tool_nodes["fundamentals"]
 
+        if "macro" in selected_analysts:
+            analyst_nodes["macro"] = create_macro_analyst(
+                self.quick_thinking_llm, self.toolkit
+            )
+            delete_nodes["macro"] = create_msg_delete()
+            # 宏观分析师暂时复用新闻工具节点
+            tool_nodes["macro"] = self.tool_nodes.get("news")
+
+        if "sector" in selected_analysts:
+            analyst_nodes["sector"] = create_sector_analyst(
+                self.quick_thinking_llm, self.toolkit
+            )
+            delete_nodes["sector"] = create_msg_delete()
+            # 行业分析师暂时复用市场工具节点
+            tool_nodes["sector"] = self.tool_nodes.get("market")
+
         # Create researcher and manager nodes
         bull_researcher_node = create_bull_researcher(
             self.quick_thinking_llm, self.bull_memory
